@@ -1,20 +1,29 @@
 const http = require('http');
+const fs = require('fs');
 
 function handler(req, res) {
-    console.log(req)
     try{
-        if(req.url === '/'  && req.method != "GET"){
+        if(req.url === '/' && req.method != "GET"){
             res.writeHead(200, {'Content-type':'text/plain'});
-            res.write(`<h1>${req.statusCode} Méthode non authorisée`);
+            const data = fs.readFileSync('./public/Not-authorized.html', 'utf8')
+            res.write(data)
             res.end();
-        }else {
+        }else if(req.url === '/' && req.method == "GET"){
+            res.writeHead(200, {'Content-type':'text/plain'});
+            const data = fs.readFileSync('./public/index.html', 'utf8')
+            res.write(data)
+            res.end();
+        }
+        else {
             res.writeHead(404, {'Content-type':'text/plain'});
-            res.write(`<h1>${req.statusCode} Page Introuvable</h1>`);
+            const data = fs.readFileSync('./public/not-found.html', 'utf8')
+            res.write(data)
             res.end();
         };
     }catch(e){
         res.writeHead(500, {'Content-type':'text/plain'});
-        res.write(`<h1>${req.statusCode} Erreur Interne au Serveur</h1>`);
+        const data = fs.readFileSync('./public/server-error.html', 'utf8')
+        res.write(data)
         res.end();
     }
     
@@ -22,4 +31,5 @@ function handler(req, res) {
 
 const server = http.createServer(handler);
 
-server.listen(3000);
+server.listen(5000);
+console.log('Serveur écoute sur le port 5000')
