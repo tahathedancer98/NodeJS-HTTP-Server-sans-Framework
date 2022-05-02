@@ -8,6 +8,7 @@ function handler(req, res) {
         res.end();
     }else {
         res.writeHead(404, {'Content-type':'text/plain'});
+        res.write(`<h1>${req.statusCode} Page Introuvable</h1>`);
         res.end();
     };
 }
