@@ -1,11 +1,17 @@
 const http = require('http');
-const express = require('express');
-const app = express();
 
-const server = http.createServer();
+function handler(req, res) {
+    console.log(req)
+    if(req.url === '/'  && req.method != "GET"){
+        res.writeHead(200, {'Content-type':'text/plain'});
+        res.write(`<h1>${req.statusCode} Méthode non authorisée`);
+        res.end();
+    }else {
+        res.writeHead(404, {'Content-type':'text/plain'});
+        res.end();
+    };
+}
 
-app.get('/', function(req, res) {
-    res.send(`<h1>${res.statusCode} Méthode non authorisée</h1>`)
-});
-server.listen(7000); 
-console.log('Serveur écoute sur le port 5000');
+const server = http.createServer(handler);
+
+server.listen(3000);
